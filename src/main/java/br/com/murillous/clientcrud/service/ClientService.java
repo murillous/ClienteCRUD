@@ -3,23 +3,24 @@ package br.com.murillous.clientcrud.service;
 import br.com.murillous.clientcrud.dtos.ClientDTO;
 import br.com.murillous.clientcrud.entities.Client;
 import br.com.murillous.clientcrud.repositories.ClientRepository;
-import br.com.murillous.clientcrud.service.Exceptions.EntityNotFound;
-import jakarta.transaction.TransactionScoped;
-import jdk.jshell.spi.ExecutionControl;
+import br.com.murillous.clientcrud.service.exceptions.EntityNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.NoSuchElementException;
 
 @Service
 public class ClientService {
 
+    private final ClientRepository repository;
+
     @Autowired
-    private ClientRepository repository;
+    public ClientService(ClientRepository repository){
+        this.repository = repository;
+    }
 
     @Transactional
     public ClientDTO findById(Long id){
@@ -28,7 +29,7 @@ public class ClientService {
             return new ClientDTO(entity);
         }
         catch (NoSuchElementException e){
-            throw new EntityNotFound("Client not found or don't exist");
+            throw new EntityNotFound("Client not found");
         }
     }
 
@@ -58,8 +59,11 @@ public class ClientService {
     }
 
     public void delete(Long id){
-        Client entity = repository.findById(id).get();
-        repository.delete(entity);
+        if(!repository.existsById(id)){
+            throw new EntityNotFound("Client not found");
+        }
+            Client entity = repository.findById(id).get();
+            repository.delete(entity);
     }
 
     private void copyDTOtoEntity(ClientDTO dto, Client entity){

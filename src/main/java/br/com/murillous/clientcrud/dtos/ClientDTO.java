@@ -1,10 +1,7 @@
 package br.com.murillous.clientcrud.dtos;
 
 import br.com.murillous.clientcrud.entities.Client;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.grammars.hql.HqlParser;
@@ -17,12 +14,13 @@ public class ClientDTO {
 
     private Long id;
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
-    @Size(min = 11, max = 11, message = "cpf deve ter 11 dígitos")
+    @Size(min = 11, max = 11, message = "CPF must have 11 digits")
     private String cpf;
 
-    @PositiveOrZero(message = "income should be positive")
+    @PositiveOrZero(message = "Income must be positive")
     private Double income;
 
     @PastOrPresent(message = "Date of birth cannot be in the future")

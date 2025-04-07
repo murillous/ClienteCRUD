@@ -17,9 +17,12 @@ import java.net.URI;
 @RequestMapping(value = "/client")
 public class ClientController {
 
-    @Autowired
-    ClientService service;
+    private final ClientService service;
 
+    @Autowired
+    public ClientController(ClientService service){
+        this.service = service;
+    }
     @GetMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> findById(@PathVariable Long id){
         ClientDTO dto = service.findById(id);

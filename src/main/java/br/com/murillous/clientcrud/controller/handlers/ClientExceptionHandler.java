@@ -1,8 +1,8 @@
-package br.com.murillous.clientcrud.controller.hanlders;
+package br.com.murillous.clientcrud.controller.handlers;
 
 import br.com.murillous.clientcrud.dtos.CustomError;
 import br.com.murillous.clientcrud.dtos.ValidationError;
-import br.com.murillous.clientcrud.service.Exceptions.EntityNotFound;
+import br.com.murillous.clientcrud.service.exceptions.EntityNotFound;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
