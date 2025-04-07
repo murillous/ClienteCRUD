@@ -3,6 +3,7 @@ package br.com.murillous.clientcrud.controller;
 import br.com.murillous.clientcrud.dtos.ClientDTO;
 import br.com.murillous.clientcrud.entities.Client;
 import br.com.murillous.clientcrud.service.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +33,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO dto){
+    public ResponseEntity<ClientDTO> insert(@RequestBody @Valid ClientDTO dto){
         dto = service.insert(dto);
 
         URI uri = ServletUriComponentsBuilder
@@ -44,9 +45,14 @@ public class ClientController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ClientDTO> update(@PathVariable Long id,@RequestBody ClientDTO dto){
+    public ResponseEntity<ClientDTO> update(@PathVariable Long id,@RequestBody @Valid ClientDTO dto){
         dto = service.update(id,dto);
         return ResponseEntity.ok(dto);
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
