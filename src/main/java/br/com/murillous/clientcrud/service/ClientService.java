@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class ClientService {
@@ -33,6 +34,16 @@ public class ClientService {
     public ClientDTO insert(ClientDTO dto){
         Client entity = new Client();
         copyDTOtoEntity(dto,entity);
+        entity = repository.save(entity);
+
+        return new ClientDTO(entity);
+    }
+
+    @Transactional
+    public ClientDTO update(Long id,ClientDTO dto){
+        Client entity = repository.getReferenceById(id);
+        copyDTOtoEntity(dto,entity);
+
         entity = repository.save(entity);
 
         return new ClientDTO(entity);
